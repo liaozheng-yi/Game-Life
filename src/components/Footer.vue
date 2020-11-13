@@ -7,20 +7,23 @@
 </template>
 <script>
 import { useRoute, useRouter } from "vue-router";
-
+import {toSave} from "@/service/api.js";
+import {isChange} from "@/use/useIsChange.js";
 export default {
   name: "Footer",
   setup() {
     const router = useRouter();
     let route = useRoute();
     const pre = ()=>{
-        router.push(`/plans?year=${route.query.week - 1 <= 0 ? route.query.year - 1 : route.query.year}&week=${route.query.week- 1 <= 0 ? 52 : route.query.week - 1}`)
-        };
+      if(isChange().value){toSave()}
+      router.push(`/plans?year=${route.query.week - 1 <= 0 ? route.query.year - 1 : route.query.year}&week=${route.query.week- 1 <= 0 ? 52 : route.query.week - 1}`)
+    };
     const next = ()=>{
-        router.push(`/plans?year=${+route.query.week + 1 > 52 ? +route.query.year + 1 : route.query.year}&week=${+route.query.week + 1 > 52 ? 1 : +route.query.week + 1}`)
+      if(isChange().value){toSave()}
+      router.push(`/plans?year=${+route.query.week + 1 > 52 ? +route.query.year + 1 : route.query.year}&week=${+route.query.week + 1 > 52 ? 1 : +route.query.week + 1}`)
     };
     const save = () => {
-      console.log("baocunle");
+      toSave();
     };
     return {
       pre,

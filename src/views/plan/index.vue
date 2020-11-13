@@ -1,11 +1,14 @@
 <template>
-  <header class="header">Weekly-Plan</header>
+  <header class="header">
+    <h1>Weekly-Plan</h1>
+  </header>
   <main class="main">
     <div class="weekdays">
       <WeekdaysCard/>
     </div>
     <div class="wholeWeek" >
       <WholeWeekCard/>
+      <span class="transport" ref="box"/>
     </div>
   </main>
   <footer class="footer">
@@ -19,8 +22,9 @@ import WholeWeekCard from "@/views/plan/WholeWeekCard.vue";
 import Footer from "@/components/Footer.vue";
 // import store from "@/store";
 import { getPlan } from "@/service/api.js";
-import { watchEffect } from "vue";
+import { getCurrentInstance,watchEffect,onMounted } from "vue";
 import { useRoute } from "vue-router";
+import {giveBox} from "@/use/useArrange.js"
 
 export default {
   name: "Plan",
@@ -34,9 +38,9 @@ export default {
     watchEffect(() => {
       getPlan(route.query.year, route.query.week)
     });
-    // setInterval(()=>{
-    // console.log(store.state.weekdays);
-    // },3000)
+    onMounted(()=>{
+      giveBox(getCurrentInstance().refs.box);
+    })
     return {};
   }
 };
@@ -48,6 +52,12 @@ export default {
 .header {
   height: @head;
   background: #96c120;
+  display: flex;
+  align-items: center;
+  h1{
+    margin-left: 2em;
+    color:#393E46;
+  }
 }
 .main {
   min-height: @content;
@@ -67,10 +77,18 @@ export default {
       min-width: 33.33%;
       .ant-card-head {
         height: 6vh;
+        .ant-card-head-wrapper{
+          height: 6vh;
+          text-align: center;
+        }
       }
       .ant-card-body {
         height: 36vh;
         overflow: hidden;
+        padding: 12px;
+        &:hover .halfday-wrap>.hide-btn{
+          display: block;
+        }
       }
     }
   }
@@ -80,6 +98,14 @@ export default {
     display: flex;
     .ant-card {
       flex: 1;
+    }
+    .transport{
+      display: none;
+      position: fixed;
+      border: 1px solid #FFCC00; 
+      background: #96c120;
+      padding: 0 8px;
+      border-radius: 8px;
     }
   }
 }

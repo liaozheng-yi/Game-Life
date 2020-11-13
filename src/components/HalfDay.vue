@@ -1,32 +1,98 @@
 <template>
-  <a-button>{{ button }}</a-button>
-  <br/>
-  <a-input></a-input>
-  <a-checkbox  v-for="item in data" :key="item">{{item.work}}</a-checkbox>
+  <div class="halfday-wrap">
+    <a-button
+      @click="() => {showInput = !showInput}"
+      :class="{'hide-btn':!data.length & !showInput}"
+    >
+      {{ button }}
+    </a-button>
+    <a-input
+      @pressEnter="newWork"
+      v-model:value="inputData"
+      v-if="showInput"
+      @blur="() => {showInput = false;}"
+    />
+    <div v-for="(item, wokrIndex) in data" :key="item" class="work-wrap">
+      <a-checkbox :checked="item.done" @click="isDone(wokrIndex)">
+        {{ item.work }}
+      </a-checkbox>
+      <CloseOutlined @click="del(wokrIndex)" />
+    </div>
+  </div>
 </template>
 <script>
-import { computed } from 'vue';
+import { computed, ref } from "vue";
+import { CloseOutlined } from "@ant-design/icons-vue";
 import store from "@/store";
 export default {
   name: "HalfDay",
-  props: {
-    index: Number,
+  components: {
+    CloseOutlined,
   },
   setup(props, ctx) {
-    let button = ctx.attrs.button;
-    let target = ctx.attrs.target;
-    console.log('target',target,typeof(target));
-    let data = computed(()=>{
-        let weekdays = store.state.weekdays;
-        // let day = weekdays[props.index];
-        // console.log(day);
-        return weekdays;
+    let { button, target, index } = ctx.attrs;
+
+    let data = computed(() => {
+      return store.state.weekdays[index][target];
     });
-    // let works = data[props.index]
+
+    let isDone = (wokrIndex) => {
+      store.commit("daysIsDone", {
+        index,
+        target,
+        wokrIndex,
+      });
+    };
+
+    let inputData = ref();
+    let newWork = () => {
+      store.commit("daysNewWork", {
+        index,
+        target,
+        value: inputData.value,
+      });
+      inputData.value = "";
+    };
+
+    let del = (wokrIndex) => {
+      store.commit("daysDel", {
+        index,
+        target,
+        wokrIndex,
+      });
+    };
     // setInterval(() => {
-    //   console.log(data);
-    // }, 5000);
-    return { button,data };
+    //   console.log(work.value);
+    // }, 2000);
+    let showInput = ref(false);
+    return { button, data, isDone, newWork, inputData, del, showInput };
   },
 };
 </script>
+<style lang="less" scoped>
+.halfday-wrap {
+  display: flex;
+  flex-direction: column;
+  .ant-btn{
+    width:5em
+  }
+  .hide-btn{
+    display: none;
+  }
+  .work-wrap {
+    position: relative;
+    .ant-checkbox-wrapper {
+      margin: 0;
+    }
+    &:hover .anticon {
+      display: block;
+    }
+    .anticon {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 0.35em;
+    }
+  }
+}
+</style>

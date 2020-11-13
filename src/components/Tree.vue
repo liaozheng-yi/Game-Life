@@ -1,26 +1,34 @@
 <template>
-  <label class="ant-checkbox-wrapper" v-for="item in data" :key="item.key">
-    <span class="ant-checkbox ant-checkbox-check">
-    <!-- <span class="ant-checkbox ant-checkbox-indeterminate"> -->
-    <!-- <span class="ant-checkbox ant-checkbox-checked"> -->
-      <input type="checkbox" class="ant-checkbox-input" value="true" />
-      <span class="ant-checkbox-inner"></span>
-    </span>
-    <span>
-      {{item.work}}
-      <p>sdfdfadfasd</p>
-    </span>
-    <!-- <br/> -->
-  </label>
+  <ul>
+    <TreeNode v-for="(item,index) in data" :key="item.key" :data="item" :index="[index]"/>   
+  </ul>
 </template>
 <script>
+import TreeNode from "./TreeNode.vue"
+
 export default {
-  props:{
-    data:Array
+  name: "Tree",
+  props: {
+    data: Array,
   },
-  mounted(){
-    console.log(this.$props.data);
-    console.log(this.$store.state.wholeWeek);
+  components:{
+      TreeNode
   }
-};
-</script>ipt>
+}
+</script>
+<style lang="less">
+.tree-work-wrap {
+  position: relative;
+//   .ant-checkbox-wrapper{
+//       padding: 0;
+//   }
+  &:hover .icon-wrap {
+    display: inline-block;
+  }
+  .icon-wrap {
+    display: none;
+    position: absolute;
+    right: 0;
+  }
+}
+</style>

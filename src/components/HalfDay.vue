@@ -1,8 +1,12 @@
 <template>
   <div class="halfday-wrap">
     <a-button
-      @click="() => {showInput = !showInput}"
-      :class="{'hide-btn':!data.length & !showInput}"
+      @click="
+        () => {
+          showInput = !showInput;
+        }
+      "
+      :class="{ 'hide-btn': !data.length & !showInput }"
     >
       {{ button }}
     </a-button>
@@ -10,7 +14,11 @@
       @pressEnter="newWork"
       v-model:value="inputData"
       v-if="showInput"
-      @blur="() => {showInput = false;}"
+      @blur="
+        () => {
+          showInput = false;
+        }
+      "
     />
     <div v-for="(item, wokrIndex) in data" :key="item" class="work-wrap">
       <a-checkbox :checked="item.done" @click="isDone(wokrIndex)">
@@ -46,11 +54,13 @@ export default {
 
     let inputData = ref();
     let newWork = () => {
-      store.commit("daysNewWork", {
-        index,
-        target,
-        value: inputData.value,
-      });
+      if (inputData.value) {
+        store.commit("daysNewWork", {
+          index,
+          target,
+          value: inputData.value,
+        });
+      }
       inputData.value = "";
     };
 
@@ -73,10 +83,10 @@ export default {
 .halfday-wrap {
   display: flex;
   flex-direction: column;
-  .ant-btn{
-    width:5em
+  .ant-btn {
+    width: 5em;
   }
-  .hide-btn{
+  .hide-btn {
     display: none;
   }
   .work-wrap {

@@ -1,7 +1,5 @@
 <template>
-  <header class="header">
-    <h1>Weekly-Plan</h1>
-  </header>
+  <Header/>
   <main class="main">
     <div class="weekdays">
       <WeekdaysCard/>
@@ -19,8 +17,8 @@
 <script>
 import WeekdaysCard from "@/views/plan/WeekdaysCard.vue";
 import WholeWeekCard from "@/views/plan/WholeWeekCard.vue";
+import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-// import store from "@/store";
 import { getPlan } from "@/service/api.js";
 import { getCurrentInstance,watchEffect,onMounted } from "vue";
 import { useRoute } from "vue-router";
@@ -31,6 +29,7 @@ export default {
   components: {
     WeekdaysCard,
     WholeWeekCard,
+    Header,
     Footer,
   },
   setup() {
@@ -49,16 +48,6 @@ export default {
 <style lang="less">
 @head: 8vh;
 @content: 100-2 * @head;
-.header {
-  height: @head;
-  background: #96c120;
-  display: flex;
-  align-items: center;
-  h1{
-    margin-left: 2em;
-    color:#393E46;
-  }
-}
 .main {
   min-height: @content;
   max-height: @content;
@@ -98,6 +87,15 @@ export default {
     display: flex;
     .ant-card {
       flex: 1;
+      .ant-card-head{
+        height: 8vh;
+        .ant-card-head-wrapper{
+          height: inherit;
+        }
+      }
+      .ant-card-body{
+        padding: 16px;
+      }
     }
     .transport{
       display: none;

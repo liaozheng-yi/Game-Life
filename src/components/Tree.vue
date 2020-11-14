@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="tree">
     <TreeNode v-for="(item,index) in data" :key="item.key" :data="item" :index="[index]"/>   
   </ul>
 </template>
@@ -17,18 +17,7 @@ export default {
 }
 </script>
 <style lang="less">
-.tree-work-wrap {
-  position: relative;
-//   .ant-checkbox-wrapper{
-//       padding: 0;
-//   }
-  &:hover .icon-wrap {
-    display: inline-block;
-  }
-  .icon-wrap {
-    display: none;
-    position: absolute;
-    right: 0;
-  }
+.tree{
+  padding-inline-start: 16px;
 }
 </style>

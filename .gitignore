@@ -21,3 +21,10 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+src/components/lost/Tree base.vue
+src/components/lost/Tree copy.vue
+src/components/lost/Tree v2.vue
+src/components/lost/Tree2.vue
+src/components/Tree copy.vue
+src/components/Tree copy.vue
+src/components/Tree copy2.vue

@@ -57,10 +57,12 @@ export default {
         }
 
         let newWork = ()=>{
-            store.commit("weekNewWork",{
-                data:input.work,
-                index:props.index
-            })
+            if(input.work){
+                store.commit("weekNewWork",{
+                    data:input.work,
+                    index:props.index
+                })
+            }
             input.work = ""
         }
         return { isDone,input,del,newWork}
@@ -68,3 +70,22 @@ export default {
 }
 
 </script>
+<style lang="less" scoped>
+// .treeNode{
+//     list-style-type: none;
+// }
+.tree-work-wrap {
+  position: relative;
+//   .ant-checkbox-wrapper{
+//       padding: 0;
+//   }
+  &:hover .icon-wrap {
+    display: inline-block;
+  }
+  .icon-wrap {
+    display: none;
+    position: absolute;
+    right: 0;
+  }
+}
+</style>

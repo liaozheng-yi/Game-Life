@@ -55,6 +55,12 @@ let store = createStore({
         work:data,
         done:false
       })
+    },
+    mainTask(state,upload){
+      state.wholeWeek.push({
+        work:upload,
+        done:false
+      })
     }
   },
   actions: {

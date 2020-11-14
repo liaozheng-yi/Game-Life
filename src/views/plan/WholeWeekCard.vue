@@ -3,11 +3,12 @@
         <template v-slot:title>
             <h2>{{date.year}}年第{{date.week}}周_PLAN</h2>
         </template>
+        <a-input v-model:value="mainTask" @pressEnter="newMainTask"/>
         <Tree :data="data" ref="tree"/>
     </a-card>
 </template>
 <script>
-import { computed, getCurrentInstance, onMounted, reactive, watchEffect} from 'vue';
+import { computed, getCurrentInstance, onMounted, ref,reactive, watchEffect} from 'vue';
 import { useRoute } from 'vue-router'
 import store from "@/store";
 import Tree from "@/components/Tree.vue";
@@ -33,7 +34,16 @@ export default {
         onMounted(()=>{
             useArrange(getCurrentInstance().refs.tree.$el);
         })
-        return {date,data}
+
+        let mainTask = ref();
+        let newMainTask = ()=>{
+            if(mainTask.value){
+                store.commit("mainTask",mainTask.value)
+                console.log(mainTask.value);
+                mainTask.value = "";
+            }
+        }
+        return {date,data,mainTask,newMainTask}
     }
 }
 </script>

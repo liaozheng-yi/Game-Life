@@ -2,7 +2,7 @@
   <header class="header">
     <h1>Weekly-Plan</h1>
     <div class="btn-wrap" ref="btnWrap">
-    <router-link class="log-off" to="/" title="休息" ref="btn"/>
+    <router-link class="log-off" to="/" title="休息" ref="btn" @click="logOff"/>
     </div>
   </header>
 </template>
@@ -13,6 +13,11 @@ export default {
   mounted(){
     use3D(this.$refs.btnWrap,this.$refs.btn.$el)
   },
+  methods:{
+    logOff(){
+      sessionStorage.removeItem('token')
+    }
+  }
 };
 </script>
 <style lang="less">

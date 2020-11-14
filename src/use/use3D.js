@@ -1,13 +1,12 @@
 export function use3D(dad,child){
     let dadStyle = dad.style;
     let son = child;
-
+    
     //获取元素的长度height、宽度width、各边框相对于顶部、左侧的视口距离：
     //boundingClientRect={x,y,height,width,left,right,top,bottom}
     //left=x, right=x+width, top=y, bottom=y+height
-    const boundingClientRect = son.getBoundingClientRect()
-
     son.onmousemove = function(e) {
+        let boundingClientRect = son.getBoundingClientRect()
         //获取鼠标位置在元素内的相对位置
         const x = e.clientX - boundingClientRect.left
         const y = e.clientY - boundingClientRect.top

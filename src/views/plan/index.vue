@@ -1,12 +1,12 @@
 <template>
-  <Header/>
+  <Header />
   <main class="main">
     <div class="weekdays">
-      <WeekdaysCard/>
+      <WeekdaysCard />
     </div>
-    <div class="wholeWeek" >
-      <WholeWeekCard/>
-      <span class="transport" ref="box"/>
+    <div class="wholeWeek">
+      <WholeWeekCard />
+      <span class="transport" ref="box" />
     </div>
   </main>
   <footer class="footer">
@@ -18,11 +18,11 @@
 import WeekdaysCard from "@/views/plan/WeekdaysCard.vue";
 import WholeWeekCard from "@/views/plan/WholeWeekCard.vue";
 import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import Footer from "@/views/plan/Footer.vue";
 import { getPlan } from "@/service/api.js";
-import { getCurrentInstance,watchEffect,onMounted } from "vue";
+import { getCurrentInstance, watchEffect, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import {giveBox} from "@/use/useArrange.js"
+import { giveBox } from "@/use/useArrange.js";
 
 export default {
   name: "Plan",
@@ -35,13 +35,22 @@ export default {
   setup() {
     const route = useRoute();
     watchEffect(() => {
-      getPlan(route.query.year, route.query.week)
+      if (
+        Number.isInteger(+route.query.year) &
+        (+route.query.year > 2019) &
+        (+route.query.year < 2101) &
+        Number.isInteger(+route.query.week) &
+        (+route.query.week < 53) &
+        (+route.query.week > 0)
+      ) {
+        getPlan(route.query.year, route.query.week);
+      }
     });
-    onMounted(()=>{
+    onMounted(() => {
       giveBox(getCurrentInstance().refs.box);
-    })
+    });
     return {};
-  }
+  },
 };
 </script>
 
@@ -66,7 +75,7 @@ export default {
       min-width: 33.33%;
       .ant-card-head {
         height: 6vh;
-        .ant-card-head-wrapper{
+        .ant-card-head-wrapper {
           height: 6vh;
           text-align: center;
         }
@@ -75,7 +84,7 @@ export default {
         height: 36vh;
         overflow: hidden;
         padding: 12px;
-        &:hover .halfday-wrap>.hide-btn{
+        &:hover .halfday-wrap > .hide-btn {
           display: block;
         }
       }
@@ -87,20 +96,20 @@ export default {
     display: flex;
     .ant-card {
       flex: 1;
-      .ant-card-head{
+      .ant-card-head {
         height: 8vh;
-        .ant-card-head-wrapper{
+        .ant-card-head-wrapper {
           height: inherit;
         }
       }
-      .ant-card-body{
+      .ant-card-body {
         padding: 16px;
       }
     }
-    .transport{
+    .transport {
       display: none;
       position: fixed;
-      border: 1px solid #FFCC00; 
+      border: 1px solid #FFCC00;
       background: #96c120;
       padding: 0 8px;
       border-radius: 8px;

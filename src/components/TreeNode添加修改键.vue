@@ -1,10 +1,6 @@
 <template>
-  <li class="twig">
+  <li>
     <div class="tree-work-wrap">
-      <span class="switch" v-if="!!data.detail" @click="toSpread">
-        <CaretRightOutlined v-show="!spread"/>
-        <CaretDownOutlined v-show="spread"/>
-      </span>
       <a-checkbox :checked="data.done" @click="isDone">
         {{ data.work }}
       </a-checkbox>
@@ -24,7 +20,8 @@
       @pressEnter="newWork"
       ref="write"
     />
-    <ul v-if="!!data.detail" class="son-tree" v-show="spread">
+    <input type="text" class="leaf-input">
+    <ul v-if="!!data.detail">
       <TreeNode
         v-for="(item, ranking) in data.detail"
         :key="item.key"
@@ -35,46 +32,38 @@
   </li>
 </template>
 <script>
-import { CloseOutlined,PlusOutlined,CaretRightOutlined,CaretDownOutlined } from "@ant-design/icons-vue";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons-vue";
 import { reactive } from "vue";
 import store from "@/store";
 
 export default {
   name: "TreeNode",
-  components: {
-    CloseOutlined,
-    PlusOutlined,
-    CaretRightOutlined,
-    CaretDownOutlined
-  },
   props: {
     data: Object,
     index: Array,
   },
-  data(){
-    return {
-      spread:true
-    }
-  },
-  methods:{
-    toSpread(){
-      this.$data.spread = !this.$data.spread
-    }
+  components: {
+    CloseOutlined,
+    PlusOutlined,
   },
   setup(props) {
     let input = reactive({
       work: "",
       isShow: false,
     });
-    let toPlus=()=>{
-      input.isShow = !input.isShow
-    }
+
     let isDone = () => {
       store.commit("weekIsDone", props.index);
     };
+
+    let toPlus=()=>{
+      input.isShow = !input.isShow
+    }
+
     let del = () => {
       store.commit("weekDel", props.index);
     };
+
     let newWork = () => {
       if (input.work) {
         store.commit("weekNewWork", {
@@ -89,25 +78,42 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.twig{
-  list-style-type:none;
-  .tree-work-wrap {
-    position: relative; 
-    .switch{
-      position: absolute;
-      left: -16px;
-    }
-    &:hover{
-      box-shadow: -1px -1px 0 1px rgba(103, 182, 247, 0.5) inset;
-    }
-    &:hover .icon-wrap {
-      display: inline-block;
-    }
-    .icon-wrap {
-      display: none;
-      position: absolute;
-      right: 0;
-    }
+.leaf-input{
+  width: 100%;
+  padding: 3px 10px;
+  border:1px solid #d9d9d9;
+  border-radius: 2px;
+  letter-spacing: 1px;
+}
+.add{
+  &:hover{
+    border-color:#40a9ff;
+  }
+  &:focus{
+    border-color: #40a9ff;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
+  }
+}
+.rewrite{
+  &:hover{
+    border-color:#fd73f2;
+  }
+  &:focus{
+    border-color: #fd73f2;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
+  }
+}
+.tree-work-wrap {
+  position: relative;
+  &:hover .icon-wrap {
+    display: inline-block;
+  }
+  .icon-wrap {
+    display: none;
+    position: absolute;
+    right: 0;
   }
 }
 </style>

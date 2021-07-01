@@ -57,12 +57,13 @@ export default {
 <style lang="less">
 @head: 8vh;
 @content: 100-2 * @head;
+@primary-color: #96c120;
 .main {
   min-height: @content;
   max-height: @content;
   display: flex;
   .weekdays {
-    background: #c7d59f;
+    background: @primary-color;
     max-width: 63vw;
     min-width: 63vw;
     display: flex;
@@ -91,7 +92,7 @@ export default {
     }
   }
   .wholeWeek {
-    background: #c7d59f;
+    background: @primary-color;
     flex: 1;
     display: flex;
     .ant-card {
@@ -103,14 +104,16 @@ export default {
         }
       }
       .ant-card-body {
+        height: 76vh;
         padding: 16px;
+        overflow: hidden;
       }
     }
     .transport {
       display: none;
       position: fixed;
       border: 1px solid #FFCC00;
-      background: #96c120;
+      background: #c7d59f;
       padding: 0 8px;
       border-radius: 8px;
     }
@@ -118,6 +121,6 @@ export default {
 }
 .footer {
   height: @head;
-  background: #96c120;
+  background:@primary-color;
 }
 </style>

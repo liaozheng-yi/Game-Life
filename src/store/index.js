@@ -31,20 +31,24 @@ let store = createStore({
       state.weekdays[index][target].splice(wokrIndex,1)
     },
     weekIsDone(state,upload){
-      let aim = find(upload,state.wholeWeek)
-      aim.done = !aim.done;
-      isAllDone(aim)
+      if(upload.length===1){
+        state.wholeWeek[upload[0]].done = !state.wholeWeek[upload[0]].done
+      }else{
+        let aim = find(upload,state.wholeWeek);
+        aim.done = !aim.done;
+        upIsDone(state, upload);
+      }
     },
     weekDel(state,upload){
       if(upload.length===1){
         state.wholeWeek.splice(upload[0],1)
       }else{
-        let rank = upload.pop();
-        let aim = find(upload,state.wholeWeek)
-        if(aim.length===1){
-          delete aim.detail
+        let [main,side] = toSlice(upload);
+        let mainWork = find(main,state.wholeWeek)
+        if(mainWork.detail.length===1){
+          delete mainWork.detail
         }else{
-          aim.detail.splice(rank,1)
+          mainWork.detail.splice(side,1)
         }
       }
     },
@@ -53,13 +57,16 @@ let store = createStore({
       if(!aim.detail){aim.detail=[]}
       aim.detail.push({
         work:data,
-        done:false
+        done:false,
+        key:Date.now()
       })
+      aim.done = false;
     },
     mainTask(state,upload){
       state.wholeWeek.push({
         work:upload,
-        done:false
+        done:false,
+        key:Date.now()
       })
     }
   },
@@ -71,17 +78,37 @@ let store = createStore({
 
 export default store;
 
+function upIsDone(state, upload) {
+  let [main] = toSlice(upload);
+  let mainWork = find(main, state.wholeWeek);
+  let unDoneWorks = mainWork.detail.filter(ele => !ele.done);
+  if (unDoneWorks.length === 0) {
+    mainWork.done = true;
+  } else {
+    mainWork.done = false;
+  }
+  if(main.length>=2){
+    upIsDone(state,main)
+  }
+}
+
 function find(where,data){
   return where.reduce((acc,cur,index)=>{
     return where.length>index+1?acc[cur].detail:acc[cur]
   },data);
 }
 
-function isAllDone(data){
-  if(data.detail){
-    data.detail.forEach(ele => {
-      ele.done=data.done
-      isAllDone(ele)
-    });
-  }
+function toSlice(upload){
+  let main = upload.slice(0,upload.length-1)
+  let side = upload.slice(upload.length-1)[0]
+  return [main,side]
 }
+// 从上至下的数据更改
+// function downIsAllDone(data){
+//   if(data.detail){
+//     data.detail.forEach(ele => {
+//       ele.done=data.done
+//       isAllDone(ele)
+//     });
+//   }
+// }

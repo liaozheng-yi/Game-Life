@@ -10,7 +10,7 @@
         <input class="input-item" v-model="formInline.pwd" type="password" />
       </span>
     </div>
-    <button class="btn green" @click="onSubmit">登录</button>
+    <!-- <button class="btn green" @click="onSubmit">登录</button> -->
   </div>
 </template>
 <script>

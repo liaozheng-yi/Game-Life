@@ -1,5 +1,5 @@
 <template>
-  <ul class="tree">
+  <ul class="main-tree">
     <TreeNode v-for="(item,index) in data" :key="item.key" :data="item" :index="[index]"/>   
   </ul>
 </template>
@@ -17,7 +17,10 @@ export default {
 }
 </script>
 <style lang="less">
-.tree{
+.main-tree{
   padding-inline-start: 16px;
+}
+.son-tree{
+  padding-inline-start: 24px;
 }
 </style>
